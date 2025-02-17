@@ -39,7 +39,7 @@ const Login = () => {
           localStorage.setItem('authToken', response.data.token);
           localStorage.setItem('userKey', 'true');
 
-          setIsAuthenticated(true); // ✅ Update authentication state
+          setIsAuthenticated(true); //  Update authentication state
           navigate('/home');
           window.location.reload();
         } else {

@@ -10,6 +10,10 @@ const cloudinary = require("cloudinary").v2;
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// Import session route
+const sessionRoutes = require("./routes/sessionRoutes");
+app.use("/api", sessionRoutes);
+
 // Ensure MONGO_URI is set
 if (!process.env.MONGO_URI) {
   console.error("MONGO_URI is not set in .env file");
@@ -65,12 +69,12 @@ app.use(
     cookie: {
       maxAge: 1000 * 60 * 60, // 1 hour
       httpOnly: true,
-      secure: process.env.NODE_ENV === "production",
+      secure: process.env.NODE_ENV === "production", // Only use secure cookies in production
     },
   })
 );
 
-// Import Routes
+// Import other routes
 const loginRoutes = require("./routes/LoginRoutes");
 const jobRoutes = require("./routes/jobRoutes");
 const jobApplyRoutes = require("./routes/jobapplyRoutes");
