@@ -106,8 +106,6 @@ const Login = () => {
             />
           </div>
 
-          
-
           <button type="submit" className="btn" disabled={loading}>
             {loading ? 'Processing...' : isLogin ? 'Login' : 'Register'}
           </button>
