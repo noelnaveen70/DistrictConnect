@@ -46,7 +46,7 @@ const PrivateRoute = ({ children, roles }) => {
 
   useEffect(() => {
     axios
-      .get("http://localhost:5000/api/session", { withCredentials: true })
+      .get("https://districtconnect-backend.onrender.com/api/session", { withCredentials: true })
       .then((response) => {
         if (response.data.loggedIn) {
           setUser(response.data.user);
