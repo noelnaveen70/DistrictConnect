@@ -74,6 +74,7 @@ function App() {
           <Route path="/home" element={<Home />} />
           <Route path="/login" element={<Login />} />
           <Route path="/districts" element={<Districts />} />
+          
           <Route path="/adminpanel" element={<PrivateRoute roles={['admin']}><Adminpanel /></PrivateRoute>} />
           
           {/* Job Management */}
