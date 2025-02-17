@@ -10,44 +10,49 @@ const cloudinary = require("cloudinary").v2;
 const app = express();
 const PORT = process.env.PORT || 5000;
 
-//  Ensure MONGO_URI is set
+// Ensure MONGO_URI is set
 if (!process.env.MONGO_URI) {
-  console.error(" MONGO_URI is not set in .env file");
+  console.error("MONGO_URI is not set in .env file");
   process.exit(1);
 }
 
-//  Connect to MongoDB
+// Connect to MongoDB
 mongoose
   .connect(process.env.MONGO_URI, {
     useNewUrlParser: true,
     useUnifiedTopology: true,
   })
-  .then(() => console.log(" MongoDB Connected"))
+  .then(() => console.log("MongoDB Connected"))
   .catch((err) => {
-    console.error(" MongoDB Connection Error:", err);
+    console.error("MongoDB Connection Error:", err);
     process.exit(1);
   });
 
-//  Cloudinary Configuration
+// Cloudinary Configuration
 cloudinary.config({
   cloud_name: process.env.CLOUDINARY_CLOUD_NAME,
   api_key: process.env.CLOUDINARY_API_KEY,
   api_secret: process.env.CLOUDINARY_API_SECRET,
 });
 
-//  Setup CORS
+// Setup CORS
 app.use(
   cors({
     credentials: true,
-    origin: ["https://districtconnect-backend.onrender.com", "http://localhost:5173"],
+    origin: ["https://districtconnect-frontend.onrender.com", "http://localhost:5173"], // Allow frontend
+    methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS"], // Explicitly allow these methods
+    allowedHeaders: ["Content-Type", "Authorization"], // Allow necessary headers
   })
 );
 
-//  Express Middleware
+// Ensure OPTIONS requests are handled
+app.options("*", cors());
+
+// Express Middleware
 app.use(express.json());
 app.use("/uploads", express.static(path.join(__dirname, "uploads"))); // Serve uploaded files
 
-//  Session Configuration
+// Session Configuration
 app.use(
   session({
     secret: process.env.SESSION_SECRET || "your_secret_key",
@@ -65,7 +70,7 @@ app.use(
   })
 );
 
-//  Import Routes
+// Import Routes
 const loginRoutes = require("./routes/LoginRoutes");
 const jobRoutes = require("./routes/jobRoutes");
 const jobApplyRoutes = require("./routes/jobapplyRoutes");
@@ -73,7 +78,7 @@ const tourismRoutes = require("./routes/tourismRoutes");
 const hospitalRoutes = require("./routes/hospitalRoutes");
 const schoolRoutes = require("./routes/schoolRoutes");
 
-//  Use Routes (Fixed API Paths)
+// Use Routes
 app.use("/api", loginRoutes);
 app.use("/job", jobRoutes);
 app.use("/jobapply", jobApplyRoutes);
@@ -81,5 +86,5 @@ app.use("/tourism", tourismRoutes);
 app.use("/hospital", hospitalRoutes);
 app.use("/school", schoolRoutes);
 
-//  Start Server
-app.listen(PORT, () => console.log(` Server running on port ${PORT}`));
+// Start Server
+app.listen(PORT, () => console.log(`Server running on port ${PORT}`));
