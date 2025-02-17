@@ -7,6 +7,10 @@ export default defineConfig({
   base: '/', // Ensures the base path is set correctly for routing
   server: {
     historyApiFallback: true,  // Ensures React Router works correctly on refresh
+    // Optional: Add a proxy if needed for API requests
+    // proxy: {
+    //   '/api': 'https://districtconnect-backend.onrender.com', // Replace with your backend API URL
+    // },
   },
   build: {
     outDir: 'dist', // Directory to output the build
